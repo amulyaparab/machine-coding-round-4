@@ -17,17 +17,7 @@ export const PostCard = ({
 }) => {
   const { upVoteHandler, downVoteHandler, state, dispatch } = useData();
   const navigate = useNavigate();
-  const [minutesAgo, setMinutesAgo] = useState(0);
-  const calculateMinutesAgo = () => {
-    const createdDate = new Date(createdAt);
-    const currentDate = new Date();
-    const timeDiff = Math.abs(currentDate.getTime() - createdDate.getTime());
-    const minutesAgo = Math.floor(timeDiff / (1000 * 60));
-    setMinutesAgo(minutesAgo);
-  };
-  useEffect(() => {
-    calculateMinutesAgo();
-  }, [minutesAgo]);
+
   return (
     <div className="post" key={postId}>
       <div className="votes">
@@ -35,7 +25,7 @@ export const PostCard = ({
           className={`${upvotes > downvotes && "purple"} fa-solid fa-caret-up`}
           onClick={() => upVoteHandler(postId)}
         ></i>
-        <p>{upvotes > downvotes ? upvotes : `${upvotes - downvotes}`}</p>
+        <p>{upvotes - downvotes}</p>
         <i
           class={`${upvotes < downvotes && "red"} fa-solid fa-caret-down`}
           onClick={() => downVoteHandler(postId)}
