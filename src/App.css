@@ -61,11 +61,12 @@ nav {
 .side-nav .tab {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 4rem;
 }
 .side-nav .tab i {
   font-size: 20px;
-  padding: 0 0.5rem;
+  padding: 0 0.7rem 0 0;
 }
 .post {
   width: 70%;
