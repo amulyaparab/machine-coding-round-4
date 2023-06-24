@@ -12,7 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<AllPosts />} />
-        <Route path="/singlePost" element={<SinglePost />} />
+        <Route path="/singlePost/:postId" element={<SinglePost />} />
       </Routes>
     </div>
   );

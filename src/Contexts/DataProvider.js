@@ -35,6 +35,31 @@ export const DataProvider = ({ children }) => {
               : post
           ),
         };
+      case "BOOKMARK":
+        return {
+          ...state,
+          filteredForumData: state.filteredForumData.map((post) =>
+            post.postId === action.payload
+              ? { ...post, isBookmarked: !post.isBookmarked }
+              : post
+          ),
+        };
+      case "SORT_BY":
+        return action.payload === "Most Upvoted"
+          ? {
+              ...state,
+              filteredForumData: state.forumPosts.sort(
+                (a, b) => b.upvotes - a.upvotes
+              ),
+            }
+          : {
+              ...state,
+              filteredForumData: state.forumPosts.sort(
+                (a, b) => b.createdAt - a.createdAt
+              ),
+            };
+      // : { ...state };
+
       default:
         return state;
     }
