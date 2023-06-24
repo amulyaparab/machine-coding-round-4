@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useData } from "../Contexts/DataProvider";
+import { useEffect, useState } from "react";
 
 export const PostCard = ({
   postId,
@@ -12,22 +13,31 @@ export const PostCard = ({
   downvotes,
   tags,
   createdAt,
-  comments,
   isBookmarked,
 }) => {
   const { upVoteHandler, downVoteHandler, state, dispatch } = useData();
   const navigate = useNavigate();
+  const [minutesAgo, setMinutesAgo] = useState(0);
+  const calculateMinutesAgo = () => {
+    const createdDate = new Date(createdAt);
+    const currentDate = new Date();
+    const timeDiff = Math.abs(currentDate.getTime() - createdDate.getTime());
+    const minutesAgo = Math.floor(timeDiff / (1000 * 60));
+    setMinutesAgo(minutesAgo);
+  };
+  useEffect(() => {
+    calculateMinutesAgo();
+  }, [minutesAgo]);
   return (
     <div className="post" key={postId}>
       <div className="votes">
         <i
-          class="fa-solid fa-caret-up"
+          className={`${upvotes > downvotes && "purple"} fa-solid fa-caret-up`}
           onClick={() => upVoteHandler(postId)}
         ></i>
-        {/* <p>{upvotes > downvotes ? upvotes : `-${upvotes}`}</p> */}
-        <p>{upvotes}</p>
+        <p>{upvotes > downvotes ? upvotes : `${upvotes - downvotes}`}</p>
         <i
-          class="fa-solid fa-caret-down"
+          class={`${upvotes < downvotes && "red"} fa-solid fa-caret-down`}
           onClick={() => downVoteHandler(postId)}
         ></i>
       </div>
@@ -35,7 +45,8 @@ export const PostCard = ({
         <div className="post-sections">
           <img src={picUrl} alt={username} />
           <p>Posted By</p>
-          <p>@{username}</p>
+          <p className="username">@{username}</p>
+          {/* <p>{minutesAgo}m</p> */}
         </div>
         <h2>{post}</h2>
         <div className="post-sections">

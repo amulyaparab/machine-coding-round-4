@@ -26,7 +26,7 @@ export const SideNav = () => {
           <img src={forumData.picUrl} alt={forumData?.name} />
           <div>
             <h4>{forumData.name}</h4>
-            <p>@{forumData.username}</p>
+            <p className="username">@{forumData.username}</p>
           </div>
         </div>
       </div>

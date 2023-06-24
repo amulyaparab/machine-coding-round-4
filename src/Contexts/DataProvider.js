@@ -1,4 +1,4 @@
-import { useContext, useReducer } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { createContext } from "react";
 import { forumData } from "../Database/forumData";
 
@@ -16,6 +16,11 @@ export const DataProvider = ({ children }) => {
       case "UPVOTE":
         return {
           ...state,
+          forumPosts: state.forumPosts.map((post) =>
+            post.postId === action.payload
+              ? { ...post, upvotes: post.upvotes + 1 }
+              : post
+          ),
           filteredForumData: state.filteredForumData.map((post) =>
             post.postId === action.payload
               ? { ...post, upvotes: post.upvotes + 1 }
@@ -25,6 +30,15 @@ export const DataProvider = ({ children }) => {
       case "DOWNVOTE":
         return {
           ...state,
+          forumPosts: state.forumPosts?.map((post) =>
+            post.postId === action.payload
+              ? {
+                  ...post,
+                  upvotes: post.upvotes - 1,
+                  downvotes: post.downvotes + 1,
+                }
+              : post
+          ),
           filteredForumData: state.filteredForumData.map((post) =>
             post.postId === action.payload
               ? {
@@ -38,6 +52,11 @@ export const DataProvider = ({ children }) => {
       case "BOOKMARK":
         return {
           ...state,
+          forumPosts: state.forumPosts.map((post) =>
+            post.postId === action.payload
+              ? { ...post, isBookmarked: !post.isBookmarked }
+              : post
+          ),
           filteredForumData: state.filteredForumData.map((post) =>
             post.postId === action.payload
               ? { ...post, isBookmarked: !post.isBookmarked }
@@ -48,15 +67,23 @@ export const DataProvider = ({ children }) => {
         return action.payload === "Most Upvoted"
           ? {
               ...state,
+              sort: "Most Upvoted",
               filteredForumData: state.forumPosts.sort(
                 (a, b) => b.upvotes - a.upvotes
               ),
             }
           : {
               ...state,
-              filteredForumData: state.forumPosts.sort(
-                (a, b) => b.createdAt - a.createdAt
-              ),
+              sort: "Latest Posts",
+              filteredForumData: state.forumPosts.sort((a, b) => {
+                if (b.createdAt < a.createdAt) {
+                  return -1; // a should come before b
+                } else if (b.createdAt > a.createdAt) {
+                  return 1; // a should come after b
+                } else {
+                  return 0; // a and b are equal in terms of order
+                }
+              }),
             };
       // : { ...state };
 
@@ -67,12 +94,19 @@ export const DataProvider = ({ children }) => {
   const initialState = {
     forumPosts: forumData.posts,
     filteredForumData: forumData.posts,
+    sort: "",
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log(state, "stasytdasjtg");
+
   return (
     <DataContext.Provider
-      value={{ upVoteHandler, downVoteHandler, state, dispatch }}
+      value={{
+        upVoteHandler,
+        downVoteHandler,
+        state,
+        dispatch,
+      }}
     >
       {children}
     </DataContext.Provider>

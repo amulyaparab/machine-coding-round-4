@@ -18,6 +18,7 @@ export const forumData = {
       createdAt: "2023-06-24T12:00:00Z",
       comments: [
         {
+          name: "Ashwin",
           commentId: "89898-856-87576",
           username: "ashwin4real",
           picUrl: "http://bit.ly/42Zm7tM",

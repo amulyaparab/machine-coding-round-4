@@ -22,9 +22,12 @@ export const SinglePost = () => {
               <div className="comment">
                 <img src={comment?.picUrl} alt={comment.username} />
                 <div>
-                  <div>{comment?.username}</div>
-                  <p>Replying to @{findPost.username}</p>
-                  <p>{comment?.comment}</p>
+                  <div className="name-username">
+                    <h4>{comment?.name}</h4>
+                    <div className="username">@{comment?.username}</div>
+                  </div>
+                  <p className="username">Replying to @{findPost.username}</p>
+                  <h4>{comment?.comment}</h4>
                 </div>
               </div>
             ))
