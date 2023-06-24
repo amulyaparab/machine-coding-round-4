@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+.side-nav {
+  border: #282c34 solid;
+  height: 90vh;
+}
+.page-fractions {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+.side-nav .tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.side-nav .tab i {
+  font-size: 20px;
+  padding: 0 0.5rem;
+}
