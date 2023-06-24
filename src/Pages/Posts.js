@@ -1,10 +1,13 @@
-import { forumData } from "../Database/forumData";
+import { useNavigate } from "react-router-dom";
+import { useData } from "../Contexts/DataProvider";
 
 export const Posts = () => {
+  const { upVoteHandler, downVoteHandler, state } = useData();
+  const navigate = useNavigate();
   return (
     <div className="all-posts">
       <h1>Posts</h1>
-      {forumData?.posts?.map(
+      {state?.filteredForumData?.map(
         ({
           postId,
           username,
@@ -21,9 +24,15 @@ export const Posts = () => {
         }) => (
           <div className="post" key={postId}>
             <div className="votes">
-              <i class="fa-solid fa-caret-up"></i>
-              <p>{upvotes}</p>
-              <i class="fa-solid fa-caret-down"></i>
+              <i
+                class="fa-solid fa-caret-up"
+                onClick={() => upVoteHandler(postId)}
+              ></i>
+              <p>{upvotes > downvotes ? upvotes : `-${upvotes}`}</p>
+              <i
+                class="fa-solid fa-caret-down"
+                onClick={() => downVoteHandler(postId)}
+              ></i>
             </div>
             <div>
               <div className="post-sections">
@@ -39,7 +48,10 @@ export const Posts = () => {
               </div>
               <p>{postDescription}</p>
               <div className="post-sections actions">
-                <i class="fa-regular fa-comment"></i>
+                <i
+                  class="fa-regular fa-comment"
+                  onClick={() => navigate("/singlePost")}
+                ></i>
                 <i class="fa-solid fa-share-nodes"></i>
                 <i class="fa-solid fa-bookmark"></i>
               </div>
